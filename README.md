@@ -3,15 +3,15 @@ Sourced Server script
 
 I created this script because we have multiple servers and using single scripts just didn't work for me anymore. Since then i improved upon it in my own way (there are bound to be better sollutions, but it works for me) currently it has the following options:
 
-  start		Start the server
-  stop		Stop the server
-  update	Update the server
-  verify	Verify the server
-  kill		Kill the server/screen
-  status	Get the status of the server
-  send		Send command to screen of server
-  link		Update and create symbolic links
-  cleanup	Cleanup old logs/sprays/etc 
+	start		Start the server
+	stop		Stop the server
+	update		Update the server
+	verify		Verify the server
+	kill		Kill the server/screen
+	status		Get the status of the server
+	send		Send command to screen of server
+	link		Update and create symbolic links
+	cleanup		Cleanup old logs/sprays/etc 
 
 To understand how this script works, you need to have a proper layout on how you keep your servers in line.
 
@@ -35,12 +35,12 @@ For each gametype you need to have those folders and txt files present!
 
 in the <gametype>.links.txt you can have something like:
 
-  cfg/server.cfg
-  cfg/autoexec.cfg
+	cfg/server.cfg
+	cfg/autoexec.cfg
 
 And in the <gametype>.shared.txt you can have:
 
-  addons/sourcemod/configs/databases.cfg
+	addons/sourcemod/configs/databases.cfg
 
 So now you would say, whats the point of all this? If you have a ton of servers running on the same box you will have 1 folder which houses all your plugins. So if a update comes out for 1 plugin that is used on several of your servers you dont need to go through all servers. Also your config files for all important files in the links file will be in 1 central place, without having to cd to all your servers (they are all symbolic linked) also handy is the shared one, which can be shared across gametypes mostly. The databases.cfg stays the same and any change you will likely want to update all servers.
 
