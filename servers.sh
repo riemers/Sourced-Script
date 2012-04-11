@@ -113,7 +113,7 @@ case "$1" in
       echo "Starting $SERVERNAME"
       sleep 1
       cd $WD
-       screen -A -m -d -S $2 ./srcds_run -steamdir .. -srvdir .. -corefile "cores/$3-lethal_%Y%m%d%H%M%S.core" -debug -autoupdate -game "$GAME" +ip $IP -port $PORT+## $OPTIONS -pidfile $WD/$2.pid
+       screen -A -m -d -S $2 ./srcds_run -debug -autoupdate -game "$GAME" +ip $IP -port $PORT+## $OPTIONS -pidfile $WD/$2.pid
      ;;
      status)
       if [ -e "$WD/$2.pid" ]; then
