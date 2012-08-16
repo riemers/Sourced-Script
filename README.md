@@ -12,6 +12,7 @@ I created this script because we have multiple servers and using single scripts 
 	send		Send command to screen of server
 	link		Update and create symbolic links
 	cleanup		Cleanup old logs/sprays/etc 
+        push		Push a folder
 
 To understand how this script works, you need to have a proper layout on how you keep your servers in line.
 
@@ -58,6 +59,18 @@ Send
 ----
 
 The ./servers.sh send command can be used with "all" or just the server name, handy if you want to issue something via the commandline. I used this back in the days before using SSMS, my other tool.
+
+Push
+----
+
+For now its hardcoded that it uses ~/sources/push folder to push files to. What it does it will copy the contents of this folder to the base of the install (so goldrush/orangebox/tf/ for instance) so make sure you have all the correct folders in there, if you want to add a plugin it needs to be in addons/sourcemod/plugins for it to work.
+
+3 options:
+	./servers.sh push goldrush - Does a push of the contents of those files towards the goldrush server
+	./servers.sh push all - Does a push to ALL servers (if you want to roll out a sourcemod new version for instance)
+	./servers.sh push all tf - Checks the gametype and only pushes the files to all servers with the gametype tf
+
+Do remember that this does copy files over so be carefull with this, test before you run this and see if it is handy for you as it is for me. I can update my sourcemod on all servers in less then 5 minutes on 40 servers.
 
 Question / Feedback
 -------------------

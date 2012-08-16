@@ -12,7 +12,7 @@ echo "Server startup 1.1b www.lethal-zone.eu"
 echo "--------------"
 
 function actions {
-     echo "./servers.sh <action> <servername>"
+     echo "./servers.sh <action> <servername> [gametype]"
      echo ""
      echo "Actions:"
      echo "- start      Start the server"
@@ -24,6 +24,20 @@ function actions {
      echo "- send       Send command to screen of server"
      echo "- link       Update and create symbolic links"
      echo "- cleanup    Cleanup old logs/sprays/etc"
+     echo "- push       push data from ~/sources/push"
+}
+
+function push {
+     if ! [ -d ~/sources/push ] ;then
+        echo "No source folder found!"
+	exit 99
+     fi
+
+     if [ -d $1/ ] && [ "$1" != "" ]  ;then
+        cp -r ~/sources/push/* $1/$2/
+     else
+        echo "Wrong servername, directory not found, skipping"
+     fi
 }
 
 
@@ -34,6 +48,8 @@ then
      echo ""
      echo "Servers:"
      echo "- $SERVERS"
+     echo "Gametypes:"
+     echo "- $(for i in `for i in $SERVERS; do grep "GAME=" $i/.config.sh|cut -d "=" -f 2; done|sort -u`; do echo -n "$i " ; done)"
      echo ""
      echo "Leave <servername> empty to get status/fullname"
      exit 1
@@ -70,11 +86,11 @@ then
 fi
 
 case "$1" in
-     start|status|stop|update|verify|kill|send|link|cleanup)
+     start|status|stop|update|verify|kill|send|link|cleanup|push)
       if [ -e "$2/.config.sh" ]; then
        . ./$2/.config.sh
       else
-	if [ "$1" == "link" ] || [ "$1" == "cleanup" ] ; then
+	if [ "$1" == "link" ] || [ "$1" == "cleanup" ] || [ "$1" == "push" ] ; then
 		OK=OK
 	else
 	if [ "$2" == "all" ]; then
@@ -295,6 +311,9 @@ case "$1" in
              REPLAYDIR="$WD/$GAME/replay/server/"
              SVRROOT="$WD/$GAME/"
 
+             if [ -d $WD ] ;then
+               cd $WD && pwd && nice -19 find . -maxdepth 1 -name "core.*" -type f -mtime +7 -exec rm {} \;
+             fi
              if [ -d $SMDIRLOG ] ;then
                cd $SMDIRLOG && pwd && nice -19 find -type f -mtime +7 -exec rm {} \;
              fi
@@ -310,6 +329,41 @@ case "$1" in
                fi
              fi
      done
+     ;;
+     push)
+      echo "- Issuing a push of ~/sources/push"
+     if [ "$2" != "all" ]; then
+        SERVERS=$2
+     fi
+
+     if [ "$2" == "all" ]; then
+	echo "Are you sure you want to push out ~/sources/push to ALL servers/gametypes?"
+        echo " - To specify only tf server, add tf to it."
+	echo " - Press Ctrl-c to abort, or any key to continue"
+	read anykey
+     fi
+
+     for x in $SERVERS
+     do
+             . ~/$x/.config.sh
+             if [ "$2" == "all" ]; then
+             	if [ "$3" != "" ]; then
+			if [ "$3" == "$GAME" ];then
+                		echo "pushing stuff towards $SERVERNAME (only $3)"
+				push $WD $GAME
+                	else
+			        echo "Skipping $SERVERNAME (not matching $3)" 
+			fi
+		else
+			echo "pushing stuff towards $SERVERNAME"
+			push $WD $GAME
+		fi
+             else
+                 echo "pushing stuff towards $SERVERNAME"
+                 push $WD $GAME
+             fi
+     done
+
      ;;
      kill)
       echo "- Issuing a kill for $SERVERNAME server/screen"
