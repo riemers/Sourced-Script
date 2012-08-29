@@ -12,7 +12,7 @@ I created this script because we have multiple servers and using single scripts 
 	send		Send command to screen of server
 	link		Update and create symbolic links
 	cleanup		Cleanup old logs/sprays/etc 
-        push		Push a folder
+	push		Push a folder
 
 To understand how this script works, you need to have a proper layout on how you keep your servers in line.
 
@@ -71,6 +71,8 @@ For now its hardcoded that it uses ~/sources/push folder to push files to. What 
 	./servers.sh push all tf - Checks the gametype and only pushes the files to all servers with the gametype tf
 
 Do remember that this does copy files over so be carefull with this, test before you run this and see if it is handy for you as it is for me. I can update my sourcemod on all servers in less then 5 minutes on 40 servers.
+
+BE REALLY CAREFULL WITH THIS AND KNOW WHAT YOU ARE DOING! Test first if uncertain somewhere else.
 
 Question / Feedback
 -------------------
